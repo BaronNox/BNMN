@@ -1,4 +1,4 @@
-package net.baronnox.addressbook;
+package net.baronnox.dataobjects.addressbook;
 
 import java.io.UnsupportedEncodingException;
 import javax.mail.internet.InternetAddress;
