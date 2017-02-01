@@ -13,3 +13,5 @@ hs_err_pid*
 JavaMail/.settings/org.eclipse.jdt.core.prefs
 JavaMail/.project
 JavaMail/.classpath
+.DS_Store
+JavaMail/bin
