@@ -1,9 +1,14 @@
 package net.baronnox.dataobjects.addressbook;
 
 import java.io.UnsupportedEncodingException;
+
 import javax.mail.internet.InternetAddress;
 
+
 public class Contact {
+	private static int nextID = 0;
+	
+	private int id;
 	private InternetAddress iAddress;
 	
 	public Contact(String address) {
@@ -13,6 +18,8 @@ public class Contact {
 	public Contact(String address, String personal) {
 		try {
 			this.iAddress = new InternetAddress(address, personal);
+			id = nextID;
+			nextID++;
 		} catch (UnsupportedEncodingException e) {
 			System.err.println(address + " uses wrong charset.");
 		}
@@ -32,6 +39,11 @@ public class Contact {
 		} catch (UnsupportedEncodingException e) {
 			System.err.println(personal + " uses wrong charset.");
 		}
+	}
+	
+	public int getID() {
+		int tmp = id;
+		return tmp;
 	}
 	
 }
