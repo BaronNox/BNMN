@@ -3,14 +3,20 @@ package net.baronnox.dataobjects.addressbook;
 public class Account {
 	private String usrName;
 	private String usrPw;
+	private AddressBook addressBook;
 	
 	public Account(String usrName, String usrPw) {
 //		validateInput(usrName, usrPw);
 		
 		this.usrName = usrName;
 		this.usrPw = usrPw;
+		this.addressBook = loadAddressBook();
 	}
 	
+	private AddressBook loadAddressBook() {
+		return null;
+	}
+
 	private void validateInput(String usrName, String usrPw) {
 		try{
 			if(usrName == null || usrPw == null || !usrName.contains("@gmail.com") || usrName.length() == 0 || usrPw.length() == 0) {
