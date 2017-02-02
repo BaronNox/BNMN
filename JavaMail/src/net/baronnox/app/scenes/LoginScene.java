@@ -43,7 +43,7 @@ public class LoginScene extends Scene {
 		hBox = new HBox(10);
 		grid = new GridPane();
 		
-		file = new File("resources/net/baronnox/app/BNMN.png");
+		file = new File("JavaMail/resources/BNMN.png");
 		img = new Image(file.toURI().toString());
 		imgView = new ImageView(img);
 		
