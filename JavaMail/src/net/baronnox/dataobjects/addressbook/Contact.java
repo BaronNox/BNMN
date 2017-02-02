@@ -6,7 +6,7 @@ import javax.mail.internet.InternetAddress;
 
 
 public class Contact {
-	private static int nextID = 0;
+	private static int nextID = 1;
 	
 	private int id;
 	private InternetAddress iAddress;
@@ -45,5 +45,14 @@ public class Contact {
 		int tmp = id;
 		return tmp;
 	}
+
+	@Override
+	public String toString() {
+		String result = new String();
+		result += "[" + id + "] " + iAddress.getPersonal() + " <" + iAddress.getAddress() + ">";
+		return result;
+	}
+	
+	
 	
 }
