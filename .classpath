@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="JavaMail/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/BaronNox/Documents/APIs/JavaMail/javax.mail.jar" sourcepath="C:/Users/BaronNox/Documents/APIs/JavaMail/src/javamail-1.5.3-src.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
