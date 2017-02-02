@@ -5,7 +5,7 @@ public class Account {
 	private String usrPw;
 	
 	public Account(String usrName, String usrPw) {
-		validateInput(usrName, usrPw);
+//		validateInput(usrName, usrPw);
 		
 		this.usrName = usrName;
 		this.usrPw = usrPw;
