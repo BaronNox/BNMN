@@ -2,13 +2,17 @@ package net.baronnox.app.scenes;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import net.baronnox.dataobjects.addressbook.Account;
 import net.baronnox.dataobjects.addressbook.Contact;
@@ -53,15 +57,35 @@ public class HomeScene extends Scene {
 		gridPane.setPrefWidth(WIDTH - 2);
 		gridPane.setGridLinesVisible(true);
 		
-		ScrollPane innerScrollPan = new ScrollPane();
-		innerScrollPan.setHbarPolicy(ScrollBarPolicy.NEVER);
-		innerScrollPan.setPrefHeight(HEIGHT / 2);
+		Pane innerPane = new Pane();
+		innerPane.setPrefHeight(HEIGHT / 2);
+		innerPane.setMinHeight(HEIGHT / 2);
+		innerPane.setMaxHeight(HEIGHT / 2);
 		
-		ListView<Contact> listView = new ListView<>();
-		listView.getItems().add(new Contact("test1@byom.de", "Random fucker"));
-		innerScrollPan.setContent(listView);
+		ListView<String> listView = new ListView<>();
+		listView.getItems().add(new Contact("test1@testerino.de", "Max Musterfrau").toString());
+		listView.setPrefHeight(innerPane.getPrefHeight());
+		innerPane.getChildren().add(listView);
 		
-		gridPane.add(innerScrollPan, 0, 0);
+		gridPane.add(innerPane, 0, 0);
+		
+		HBox cBtnBox = new HBox(3);
+		cBtnBox.setAlignment(Pos.CENTER);
+		Button addContactBtn = new Button("Add Contact");
+		addContactBtn.setOnAction(e -> {
+			Stage stage = new Stage();
+			stage.setScene(new Scene(new Pane(), 100, 100));
+			stage.show();
+		});
+		cBtnBox.getChildren().add(addContactBtn);
+		
+		Button delContactBtn = new Button("Remove Contact");
+		delContactBtn.setOnAction(e -> {
+			String selection = listView.getSelectionModel().getSelectedItem();
+			listView.getItems().remove(selection);
+		});
+		cBtnBox.getChildren().add(delContactBtn);
+		gridPane.add(cBtnBox, 0, 1);
 		
 		vBox.getChildren().add(gridPane);
 		
