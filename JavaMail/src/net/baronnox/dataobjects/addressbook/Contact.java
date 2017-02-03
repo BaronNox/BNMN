@@ -49,7 +49,13 @@ public class Contact {
 	@Override
 	public String toString() {
 		String result = new String();
-		result += "[" + id + "] " + iAddress.getPersonal() + " <" + iAddress.getAddress() + ">";
+		String personal = null;
+		if(iAddress.getPersonal() == null) {
+			personal = new String("");
+		} else {
+			personal = new String(iAddress.getPersonal());
+		}
+		result += "[" + id + "] " + personal + " <" + iAddress.getAddress() + ">";
 		return result;
 	}
 	
