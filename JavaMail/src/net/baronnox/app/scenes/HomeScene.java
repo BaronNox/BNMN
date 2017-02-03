@@ -28,6 +28,7 @@ public class HomeScene extends Scene {
 	private Stage primaryStage;
 	private Account acc;
 	private ScrollPane scrollPane;
+	private ListView<Contact> listView;
 	
 	public static HomeScene getScene(Stage primaryStage, Account acc) {
 		ScrollPane scrollPane = new ScrollPane();
@@ -66,7 +67,7 @@ public class HomeScene extends Scene {
 		innerPane.setMinHeight(HEIGHT / 2);
 		innerPane.setMaxHeight(HEIGHT / 2);
 		
-		ListView<Contact> listView = new ListView<>();
+		listView = new ListView<>();
 		listView.getItems().add(new Contact("test1@testerino.de", "Max Musterfrau"));
 		listView.setPrefHeight(innerPane.getPrefHeight());
 		innerPane.getChildren().add(listView);
@@ -96,6 +97,10 @@ public class HomeScene extends Scene {
 		vBox.getChildren().add(gridPane);
 		
 		
+	}
+	
+	public void addContactToList(Contact contact) {
+		this.listView.getItems().add(contact);
 	}
 	
 	public void setPUCreateContact(boolean value) {
