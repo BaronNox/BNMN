@@ -8,18 +8,22 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import net.baronnox.app.popups.windows.PUCreateContact;
 import net.baronnox.dataobjects.addressbook.Account;
 import net.baronnox.dataobjects.addressbook.Contact;
 
 public class HomeScene extends Scene {
 	private static final int WIDTH = 640;
 	private static final int HEIGHT = WIDTH / 2;
+	
+	private boolean isPUCreateContactShown;
 	
 	private Stage primaryStage;
 	private Account acc;
@@ -62,8 +66,8 @@ public class HomeScene extends Scene {
 		innerPane.setMinHeight(HEIGHT / 2);
 		innerPane.setMaxHeight(HEIGHT / 2);
 		
-		ListView<String> listView = new ListView<>();
-		listView.getItems().add(new Contact("test1@testerino.de", "Max Musterfrau").toString());
+		ListView<Contact> listView = new ListView<>();
+		listView.getItems().add(new Contact("test1@testerino.de", "Max Musterfrau"));
 		listView.setPrefHeight(innerPane.getPrefHeight());
 		innerPane.getChildren().add(listView);
 		
@@ -73,15 +77,17 @@ public class HomeScene extends Scene {
 		cBtnBox.setAlignment(Pos.CENTER);
 		Button addContactBtn = new Button("Add Contact");
 		addContactBtn.setOnAction(e -> {
-			Stage stage = new Stage();
-			stage.setScene(new Scene(new Pane(), 100, 100));
-			stage.show();
+			if(!isPUCreateContactShown) {
+				new PUCreateContact(this);
+				isPUCreateContactShown = true;
+			}
 		});
 		cBtnBox.getChildren().add(addContactBtn);
 		
 		Button delContactBtn = new Button("Remove Contact");
+		delContactBtn.setTooltip(new Tooltip("Delete selected Contact from list."));
 		delContactBtn.setOnAction(e -> {
-			String selection = listView.getSelectionModel().getSelectedItem();
+			Contact selection = listView.getSelectionModel().getSelectedItem();
 			listView.getItems().remove(selection);
 		});
 		cBtnBox.getChildren().add(delContactBtn);
@@ -90,5 +96,13 @@ public class HomeScene extends Scene {
 		vBox.getChildren().add(gridPane);
 		
 		
+	}
+	
+	public void setPUCreateContact(boolean value) {
+		this.isPUCreateContactShown = value;
+	}
+	
+	public boolean getPUCreateContact() {
+		return this.isPUCreateContactShown;
 	}
 }
