@@ -65,7 +65,7 @@ public class PUCreateContact {
 					homeScene.addContactToList(new Contact(address.getText(), personal.getText()));
 				}
 			} else {
-				//Error
+				new PopUpError("This ain't an eMail.");
 			}
 			cancel.fire();
 		});
