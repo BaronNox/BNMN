@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import net.baronnox.app.scenes.HomeScene;
+import net.baronnox.dataobjects.addressbook.Contact;
 
 public class PUCreateContact {
 	private HomeScene homeScene;
@@ -54,12 +55,21 @@ public class PUCreateContact {
 		address.setPromptText("e.g. john.doe@test.test");
 		personal = new TextField();
 		personal.setPromptText("e.g. John Doe");
+		cancel = new Button("Cancel");
 		create = new Button("Create");
 		create.setOnAction(e -> {
-			
+			if(address.getText() != null && address.getText().contains("@") && address.getText().contains(".")) {
+				if(personal.getText().isEmpty()) {
+					homeScene.addContactToList(new Contact(address.getText()));
+				} else {
+					homeScene.addContactToList(new Contact(address.getText(), personal.getText()));
+				}
+			} else {
+				//Error
+			}
+			cancel.fire();
 		});
 		
-		cancel = new Button("Cancel");
 		cancel.setOnAction(e -> {
 			homeScene.setPUCreateContact(false);
 			this.puStage.close();
