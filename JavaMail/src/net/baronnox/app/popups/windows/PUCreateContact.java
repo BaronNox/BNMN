@@ -59,10 +59,15 @@ public class PUCreateContact {
 		create = new Button("Create");
 		create.setOnAction(e -> {
 			if(address.getText() != null && address.getText().contains("@") && address.getText().contains(".")) {
+				Contact newContact = null;
 				if(personal.getText().isEmpty()) {
-					homeScene.addContactToList(new Contact(address.getText()));
+					newContact = new Contact(address.getText());
+					homeScene.addContactToList(newContact);
+					homeScene.getAddressBook().addContactToList(newContact);
 				} else {
-					homeScene.addContactToList(new Contact(address.getText(), personal.getText()));
+					newContact = new Contact(address.getText(), personal.getText());
+					homeScene.addContactToList(newContact);
+					homeScene.getAddressBook().addContactToList(newContact);
 				}
 			} else {
 				new PopUpError("This ain't an eMail.");
