@@ -14,7 +14,8 @@ import javax.mail.internet.MimeMessage;
 public class Test {
 
 	public static void main(String[] args) {
-		String to = "jonas.stowasser@me.com";
+//		String to = "jonas.stowasser@me.com"; //
+		String to = "cobrafrog@googlemail.com";
 		String from = "bn.mailnotifier@gmail.com";
 		
 		final String usrName = "bn.mailnotifier@gmail.com";
@@ -41,14 +42,15 @@ public class Test {
 			msg.setFrom(new InternetAddress(from));
 			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			msg.setSubject("Testing Subject");
-			msg.setText("Hello World");
+			msg.setText("Why u eat so much chicken?");
 			
-			Transport.send(msg);
-			System.out.println("Message sent successfully...");
+			for(int i = 0; i < 5; i++) {
+				Transport.send(msg);
+				System.out.println("Message sent successfully...");
+			}
 			
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 	}
-
 }
