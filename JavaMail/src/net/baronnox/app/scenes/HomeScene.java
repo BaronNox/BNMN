@@ -1,5 +1,10 @@
 package net.baronnox.app.scenes;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,41 +12,43 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import net.baronnox.app.popups.windows.PUCreateContact;
 import net.baronnox.dataobjects.Account;
 import net.baronnox.dataobjects.addressbook.AddressBook;
 import net.baronnox.dataobjects.addressbook.Contact;
 
-public class HomeScene extends Scene {
+public class HomeScene {
 	private static final int WIDTH = 640;
 	private static final int HEIGHT = WIDTH / 2;
 	
 	private boolean isPUCreateContactShown;
 	
 	private Stage primaryStage;
+	private Scene scene;
 	private Account acc;
 	private AddressBook addressBook;
 	private ScrollPane scrollPane;
 	private ListView<Contact> listView;
 	
-	public static HomeScene getScene(Stage primaryStage, Account acc) {
-		ScrollPane scrollPane = new ScrollPane();
-		return new HomeScene(scrollPane, primaryStage, acc);
-	}
-	
-	private HomeScene(ScrollPane scrollPane, Stage primaryStage, Account acc) {
-		super(scrollPane, WIDTH, HEIGHT);
+	public HomeScene(Stage primaryStage, Account acc) {
+		this.scrollPane = new ScrollPane();
+		this.scene = new Scene(scrollPane, WIDTH, HEIGHT);
+		this.acc = acc;
 		this.primaryStage = primaryStage;
-		this.scrollPane = scrollPane;
 		this.addressBook = new AddressBook();
+		System.out.println(acc.getAccName());
+		System.out.println(acc.getUserName());
+		//TEST
+		{
+			addressBook.addContactToList(new Contact("yolo@yolo.yolo", "Yolorina"));
+		}
+		//END-TEST
 		
 		initScene();
 	}
@@ -71,7 +78,7 @@ public class HomeScene extends Scene {
 		innerPane.setMaxHeight(HEIGHT / 2);
 		
 		listView = new ListView<>();
-		listView.getItems().add(new Contact("test1@testerino.de", "Max Musterfrau"));
+		listView.getItems().add(addressBook.getContactList().get(0));
 		listView.setPrefHeight(innerPane.getPrefHeight());
 		innerPane.getChildren().add(listView);
 		
@@ -79,6 +86,7 @@ public class HomeScene extends Scene {
 		
 		HBox cBtnBox = new HBox(3);
 		cBtnBox.setAlignment(Pos.CENTER);
+		
 		Button addContactBtn = new Button("Add Contact");
 		addContactBtn.setOnAction(e -> {
 			if(!isPUCreateContactShown) {
@@ -97,9 +105,28 @@ public class HomeScene extends Scene {
 		cBtnBox.getChildren().add(delContactBtn);
 		gridPane.add(cBtnBox, 0, 1);
 		
+		Button saveBtn = new Button("Save");
+		saveBtn.setOnAction(e -> {
+			try {
+				FileOutputStream foo = new FileOutputStream(acc.getUserName());
+				ObjectOutputStream oos = new ObjectOutputStream(foo);
+				
+				oos.writeObject(acc);
+				oos.flush();
+				oos.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		});
+		gridPane.add(saveBtn, 0, 2);
+		
 		vBox.getChildren().add(gridPane);
 		
 		
+	}
+	
+	public Scene getScene() {
+		return this.scene;
 	}
 	
 	public AddressBook getAddressBook() {
