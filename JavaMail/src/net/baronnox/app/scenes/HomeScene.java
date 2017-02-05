@@ -16,7 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import net.baronnox.app.popups.windows.PUCreateContact;
-import net.baronnox.dataobjects.addressbook.Account;
+import net.baronnox.dataobjects.Account;
+import net.baronnox.dataobjects.addressbook.AddressBook;
 import net.baronnox.dataobjects.addressbook.Contact;
 
 public class HomeScene extends Scene {
@@ -27,6 +28,7 @@ public class HomeScene extends Scene {
 	
 	private Stage primaryStage;
 	private Account acc;
+	private AddressBook addressBook;
 	private ScrollPane scrollPane;
 	private ListView<Contact> listView;
 	
@@ -39,6 +41,7 @@ public class HomeScene extends Scene {
 		super(scrollPane, WIDTH, HEIGHT);
 		this.primaryStage = primaryStage;
 		this.scrollPane = scrollPane;
+		this.addressBook = new AddressBook();
 		
 		initScene();
 	}
@@ -97,6 +100,10 @@ public class HomeScene extends Scene {
 		vBox.getChildren().add(gridPane);
 		
 		
+	}
+	
+	public AddressBook getAddressBook() {
+		return this.addressBook;
 	}
 	
 	public void addContactToList(Contact contact) {
