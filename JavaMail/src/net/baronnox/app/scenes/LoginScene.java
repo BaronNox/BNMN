@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -29,8 +30,11 @@ public class LoginScene extends Scene {
 	private Label usrName;
 	private Label usrPw;
 	private TextField usrTxtField;
+	private TextField accName;
 	private PasswordField usrPwField;
 	private Button loginBtn;
+	
+	private Account usrAcc;
 	
 	public static LoginScene getScene(Stage primaryStage) {
 		return new LoginScene(new VBox(10), primaryStage);
@@ -50,6 +54,7 @@ public class LoginScene extends Scene {
 		usrName = new Label("Gmail address:");
 		usrPw = new Label("Gmail password:");
 		usrTxtField = new TextField();
+		accName = new TextField();
 		usrPwField = new PasswordField();
 		loginBtn = new Button("Login!");
 		
@@ -72,6 +77,11 @@ public class LoginScene extends Scene {
 		usrTxtField.setPrefWidth(175);
 		usrTxtField.setPromptText("e.g. test@example.eu");
 		grid.add(usrTxtField, 1, 0);
+
+		accName.setPrefWidth(175);
+		accName.setPromptText("e.g. John Doe");
+		grid.add(accName, 2, 0);
+		
 		
 		usrPw.setTooltip(new Tooltip("Use Gmail Password of the account entered above."));
 		grid.add(usrPw, 0, 1);
@@ -81,8 +91,9 @@ public class LoginScene extends Scene {
 		grid.add(usrPwField, 1, 1);
 		
 		loginBtn.setOnAction(e -> {
-			Account usrAcc = new Account(usrTxtField.getText(), usrPwField.getText());
-			primaryStage.setScene(HomeScene.getScene(primaryStage, usrAcc));
+			usrAcc = new Account(accName.getText(), usrTxtField.getText(), usrPwField.getText());
+			primaryStage.setScene(new HomeScene(primaryStage, usrAcc).getScene());
+//			primaryStage.setScene(HomeScene.getScene(primaryStage, usrAcc));
 		});
 		
 //		{
