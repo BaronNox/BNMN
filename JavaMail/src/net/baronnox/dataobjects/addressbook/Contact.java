@@ -1,11 +1,12 @@
 package net.baronnox.dataobjects.addressbook;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
 import javax.mail.internet.InternetAddress;
 
 
-public class Contact {
+public class Contact implements Serializable {
 	private static int nextID = 1;
 	
 	private int id;
