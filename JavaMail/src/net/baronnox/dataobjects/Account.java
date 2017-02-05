@@ -1,15 +1,19 @@
 package net.baronnox.dataobjects;
 
+import java.io.Serializable;
+
 import net.baronnox.dataobjects.addressbook.AddressBook;
 
-public class Account {
+public class Account implements Serializable {
+	private String accName;
 	private String usrName;
 	private String usrPw;
 	private AddressBook addressBook;
 	
-	public Account(String usrName, String usrPw) {
+	public Account(String accName, String usrName, String usrPw) {
 //		validateInput(usrName, usrPw);
 		
+		this.accName = accName;
 		this.usrName = usrName;
 		this.usrPw = usrPw;
 		this.addressBook = loadAddressBook();
@@ -39,7 +43,11 @@ public class Account {
 		this.usrPw = usrPw;
 	}
 	
-	private String getUserName() {
+	public String getAccName() {
+		return accName;
+	}
+	
+	public String getUserName() {
 		return usrName;
 	}
 	
