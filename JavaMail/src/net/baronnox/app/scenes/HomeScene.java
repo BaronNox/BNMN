@@ -34,6 +34,7 @@ import net.baronnox.dataobjects.addressbook.Contact;
 public class HomeScene {
 	private static final int WIDTH = 640;
 	private static final int HEIGHT = WIDTH / 2;
+	private static final String DATA_DIR = "./data/";
 	
 	private boolean isPUCreateContactShown;
 	
@@ -50,7 +51,7 @@ public class HomeScene {
 		this.scrollPane = new ScrollPane();
 		this.scene = new Scene(scrollPane, WIDTH, HEIGHT);
 		
-		if(isAccPresentLoadIfSo(acc.getUserName())) {
+		if(isAccPresentLoadIfSo(acc.getUserName(), acc.getUserPwHash())) {
 		} else {
 			this.acc = acc;
 		}
@@ -58,8 +59,8 @@ public class HomeScene {
 		initScene();
 	}
 	
-	private boolean isAccPresentLoadIfSo(String accUsrName) {
-		Path p = Paths.get("./data/" + String.valueOf(accUsrName.hashCode()));
+	private boolean isAccPresentLoadIfSo(String accUsrName, int hash) {
+		Path p = Paths.get(DATA_DIR + String.valueOf(accUsrName.hashCode() + hash));
 		if(Files.exists(p, new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
 			acc = loadAcc(p);
 			return true;
@@ -161,9 +162,9 @@ public class HomeScene {
 		Button saveBtn = new Button("Save");
 		saveBtn.setOnAction(e -> {
 			try {
-				File dataDir = new File("./data/");
+				File dataDir = new File(DATA_DIR);
 				dataDir.mkdirs();
-				File saveFile = new File("./data/" + String.valueOf(acc.getUserName().hashCode()));
+				File saveFile = new File(DATA_DIR + String.valueOf(acc.getUserName().hashCode() + acc.getUserPwHash()));
 				FileOutputStream foo = new FileOutputStream(saveFile);
 				ObjectOutputStream oos = new ObjectOutputStream(foo);
 				oos.writeObject(acc);
