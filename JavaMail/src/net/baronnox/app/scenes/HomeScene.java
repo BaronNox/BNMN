@@ -1,10 +1,16 @@
 package net.baronnox.app.scenes;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.baronnox.app.popups.windows.PUCreateContact;
 import net.baronnox.dataobjects.Account;
+import net.baronnox.dataobjects.Notification;
 import net.baronnox.dataobjects.addressbook.AddressBook;
 import net.baronnox.dataobjects.addressbook.Contact;
 
@@ -32,25 +39,47 @@ public class HomeScene {
 	private Stage primaryStage;
 	private Scene scene;
 	private Account acc;
-	private AddressBook addressBook;
 	private ScrollPane scrollPane;
 	private ListView<Contact> listView;
 	
+	private Contact oldSelection = null;
+	
 	public HomeScene(Stage primaryStage, Account acc) {
+		this.primaryStage = primaryStage;
 		this.scrollPane = new ScrollPane();
 		this.scene = new Scene(scrollPane, WIDTH, HEIGHT);
-		this.acc = acc;
-		this.primaryStage = primaryStage;
-		this.addressBook = new AddressBook();
-		System.out.println(acc.getAccName());
-		System.out.println(acc.getUserName());
-		//TEST
-		{
-			addressBook.addContactToList(new Contact("yolo@yolo.yolo", "Yolorina"));
+		
+		if(isAccPresentLoadIfSo(acc.getUserName())) {
+		} else {
+			this.acc = acc;
 		}
-		//END-TEST
 		
 		initScene();
+	}
+	
+	private boolean isAccPresentLoadIfSo(String accUsrName) {
+		Path p = Paths.get(accUsrName);
+		if(Files.exists(p, new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
+			acc = loadAcc(p, accUsrName);
+			return true;
+		}
+		
+		return false;
+	}
+
+	private Account loadAcc(Path path, String accUsrName) {
+		Account loadedAcc = null;
+		if(Files.exists(path, new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
+			try {
+				FileInputStream fis = new FileInputStream(accUsrName);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				loadedAcc = (Account) ois.readObject();
+				ois.close();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return loadedAcc;
 	}
 
 	private void initScene() {
@@ -78,11 +107,35 @@ public class HomeScene {
 		innerPane.setMaxHeight(HEIGHT / 2);
 		
 		listView = new ListView<>();
-		listView.getItems().add(addressBook.getContactList().get(0));
+		listView.setItems(FXCollections.observableArrayList(acc.getAddressBook().getContactList()));
 		listView.setPrefHeight(innerPane.getPrefHeight());
 		innerPane.getChildren().add(listView);
 		
 		gridPane.add(innerPane, 0, 0);
+		
+		Pane contentPane = new Pane();
+		contentPane.setPrefHeight(HEIGHT / 2);
+		contentPane.setMinHeight(HEIGHT / 2);
+		contentPane.setMaxHeight(HEIGHT / 2);
+		
+		ListView<String> notifList = new ListView<>();
+		notifList.setPrefHeight(contentPane.getPrefHeight());
+		listView.setOnMouseClicked(e -> {
+			Contact selected = listView.getSelectionModel().getSelectedItem();
+			if(selected != null && !selected.equals(oldSelection)) {
+				notifList.getItems().clear();
+				for(Notification n : acc.getAddressBook().getNotificationByContact(selected)) {
+					notifList.getItems().add("Subject: " + n.getSubject());
+					notifList.getItems().add("Recipients: " + n.getRecipients());
+					notifList.getItems().add("Due: " + n.getDue());
+					notifList.getItems().add("Message: \n" + n.getMsg());
+				}
+			}
+			oldSelection = selected;
+		});
+		
+		contentPane.getChildren().add(notifList);
+		gridPane.add(contentPane, 1, 0);
 		
 		HBox cBtnBox = new HBox(3);
 		cBtnBox.setAlignment(Pos.CENTER);
@@ -110,7 +163,6 @@ public class HomeScene {
 			try {
 				FileOutputStream foo = new FileOutputStream(acc.getUserName());
 				ObjectOutputStream oos = new ObjectOutputStream(foo);
-				
 				oos.writeObject(acc);
 				oos.flush();
 				oos.close();
@@ -130,11 +182,7 @@ public class HomeScene {
 	}
 	
 	public AddressBook getAddressBook() {
-		return this.addressBook;
-	}
-	
-	public void addContactToList(Contact contact) {
-		this.listView.getItems().add(contact);
+		return this.acc.getAddressBook();
 	}
 	
 	public void setPUCreateContact(boolean value) {
@@ -143,5 +191,9 @@ public class HomeScene {
 	
 	public boolean getPUCreateContact() {
 		return this.isPUCreateContactShown;
+	}
+	
+	public void updateContactListView() {
+		listView.setItems(FXCollections.observableArrayList(acc.getAddressBook().getContactList()));
 	}
 }
