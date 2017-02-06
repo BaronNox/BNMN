@@ -10,12 +10,14 @@ public abstract class PopUpGeneric {
 	private BorderPane root;
 	private Scene scene;
 	
-	public PopUpGeneric() {
+	
+	
+	public PopUpGeneric(int width, int height) {
 		this.window = new Stage();
 		window.initStyle(StageStyle.UTILITY);
 		window.setResizable(false);
 		this.root = new BorderPane();
-		this.scene = new Scene(root, 250, 100);
+		this.scene = new Scene(root, width, height);
 		
 		initUI();
 	}
@@ -27,6 +29,10 @@ public abstract class PopUpGeneric {
 	
 	public BorderPane getPane() {
 		return root;
+	}
+	
+	protected Stage getStage() {
+		return window;
 	}
 	
 	protected void setWindowTitle(String title) {

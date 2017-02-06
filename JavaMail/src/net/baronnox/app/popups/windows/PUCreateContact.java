@@ -70,7 +70,7 @@ public class PUCreateContact {
 				homeScene.getAddressBook().addContactToList(newContact);
 				homeScene.updateContactListView();
 			} else {
-				new PopUpError("This ain't an eMail.");
+				new PopUpError("This ain't an eMail.", 250, 100);
 			}
 			cancel.fire();
 		});

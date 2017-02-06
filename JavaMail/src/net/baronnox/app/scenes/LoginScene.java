@@ -1,6 +1,9 @@
 package net.baronnox.app.scenes;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.baronnox.app.popups.windows.PopUpInfo;
 import net.baronnox.dataobjects.Account;
 
 public class LoginScene extends Scene {
@@ -86,6 +90,9 @@ public class LoginScene extends Scene {
 		
 		loginBtn.setOnAction(e -> {
 			usrAcc = new Account(usrTxtField.getText(), usrPwField.getText());
+			if(!Files.exists(Paths.get("./data/" + usrAcc.getUserName() + usrAcc.getUserPwHash()), new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
+				new PopUpInfo("Account does not exist yet. Creating new one.", 250, 80);
+			}
 			primaryStage.setScene(new HomeScene(primaryStage, usrAcc).getScene());
 		});
 		
