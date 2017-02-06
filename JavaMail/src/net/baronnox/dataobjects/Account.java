@@ -5,6 +5,8 @@ import java.io.Serializable;
 import net.baronnox.dataobjects.addressbook.AddressBook;
 
 public class Account implements Serializable {
+	private static final long serialVersionUID = Long.parseUnsignedLong("1");
+	
 	private String accName;
 	private String usrName;
 	private String usrPw;
@@ -16,13 +18,13 @@ public class Account implements Serializable {
 		this.accName = accName;
 		this.usrName = usrName;
 		this.usrPw = usrPw;
-		this.addressBook = loadAddressBook();
+		this.addressBook = new AddressBook();
 	}
 	
-	private AddressBook loadAddressBook() {
-		return null;
+	public Account(String usrName, String usrPw) {
+		this(null, usrName, usrPw);
 	}
-
+	
 	private void validateInput(String usrName, String usrPw) {
 		try{
 			if(usrName == null || usrPw == null || !usrName.contains("@gmail.com") || usrName.length() == 0 || usrPw.length() == 0) {
@@ -41,6 +43,10 @@ public class Account implements Serializable {
 	
 	public void setUserPw(String usrPw) {
 		this.usrPw = usrPw;
+	}
+	
+	public AddressBook getAddressBook() {
+		return addressBook;
 	}
 	
 	public String getAccName() {
