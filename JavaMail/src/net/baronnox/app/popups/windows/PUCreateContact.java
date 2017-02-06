@@ -20,6 +20,8 @@ public class PUCreateContact {
 	public PUCreateContact(HomeScene homeScene) {
 		this.homeScene = homeScene;
 		this.puStage = new Stage();
+		puStage.centerOnScreen();
+		puStage.requestFocus();
 		puStage.setResizable(false);
 		puStage.setTitle("Create New Contact - BNMN");
 		this.root = new Pane();
