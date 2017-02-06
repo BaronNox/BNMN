@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -20,6 +19,8 @@ import javafx.stage.Stage;
 import net.baronnox.dataobjects.Account;
 
 public class LoginScene extends Scene {
+	private static final String BG_IMG = "JavaMail/resources/BNMN.png";
+	
 	private Stage primaryStage;
 	private VBox root;
 	private HBox hBox;
@@ -30,7 +31,6 @@ public class LoginScene extends Scene {
 	private Label usrName;
 	private Label usrPw;
 	private TextField usrTxtField;
-	private TextField accName;
 	private PasswordField usrPwField;
 	private Button loginBtn;
 	
@@ -47,14 +47,13 @@ public class LoginScene extends Scene {
 		hBox = new HBox(10);
 		grid = new GridPane();
 		
-		file = new File("JavaMail/resources/BNMN.png");
+		file = new File(BG_IMG);
 		img = new Image(file.toURI().toString());
 		imgView = new ImageView(img);
 		
 		usrName = new Label("Gmail address:");
 		usrPw = new Label("Gmail password:");
 		usrTxtField = new TextField();
-		accName = new TextField();
 		usrPwField = new PasswordField();
 		loginBtn = new Button("Login!");
 		
@@ -78,11 +77,6 @@ public class LoginScene extends Scene {
 		usrTxtField.setPromptText("e.g. test@example.eu");
 		grid.add(usrTxtField, 1, 0);
 
-		accName.setPrefWidth(175);
-		accName.setPromptText("e.g. John Doe");
-		grid.add(accName, 2, 0);
-		
-		
 		usrPw.setTooltip(new Tooltip("Use Gmail Password of the account entered above."));
 		grid.add(usrPw, 0, 1);
 		
@@ -91,20 +85,9 @@ public class LoginScene extends Scene {
 		grid.add(usrPwField, 1, 1);
 		
 		loginBtn.setOnAction(e -> {
-			usrAcc = new Account(accName.getText(), usrTxtField.getText(), usrPwField.getText());
+			usrAcc = new Account(usrTxtField.getText(), usrPwField.getText());
 			primaryStage.setScene(new HomeScene(primaryStage, usrAcc).getScene());
-//			primaryStage.setScene(HomeScene.getScene(primaryStage, usrAcc));
 		});
-		
-//		{
-//			final String name = usrName.getText();
-//			@Override
-//			public void handle(ActionEvent event) {
-//				System.out.println(name + " : " + usrPw.getText());
-//				Account usrAcc = new Account(usrName.getText(), usrPw.getText());
-//				primaryStage.setScene(HomeScene.getScene(primaryStage, usrAcc));
-//			}
-//		});
 		
 		hBox.setAlignment(Pos.BOTTOM_RIGHT);
 		hBox.getChildren().add(loginBtn);
