@@ -1,5 +1,6 @@
 package net.baronnox.app.scenes;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,20 +59,20 @@ public class HomeScene {
 	}
 	
 	private boolean isAccPresentLoadIfSo(String accUsrName) {
-		Path p = Paths.get(accUsrName);
+		Path p = Paths.get(String.valueOf(accUsrName.hashCode()));
 		if(Files.exists(p, new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
-			acc = loadAcc(p, accUsrName);
+			acc = loadAcc(p);
 			return true;
 		}
 		
 		return false;
 	}
 
-	private Account loadAcc(Path path, String accUsrName) {
+	private Account loadAcc(Path path) {
 		Account loadedAcc = null;
 		if(Files.exists(path, new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
 			try {
-				FileInputStream fis = new FileInputStream(accUsrName);
+				FileInputStream fis = new FileInputStream("./data/" + path.toString());
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				loadedAcc = (Account) ois.readObject();
 				ois.close();
@@ -161,7 +162,10 @@ public class HomeScene {
 		Button saveBtn = new Button("Save");
 		saveBtn.setOnAction(e -> {
 			try {
-				FileOutputStream foo = new FileOutputStream(acc.getUserName());
+				File dataDir = new File("./data/");
+				dataDir.mkdirs();
+				File saveFile = new File("./data/" + String.valueOf(acc.getUserName().hashCode()));
+				FileOutputStream foo = new FileOutputStream(saveFile);
 				ObjectOutputStream oos = new ObjectOutputStream(foo);
 				oos.writeObject(acc);
 				oos.flush();
