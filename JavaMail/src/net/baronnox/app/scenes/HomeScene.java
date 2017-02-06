@@ -59,12 +59,11 @@ public class HomeScene {
 	}
 	
 	private boolean isAccPresentLoadIfSo(String accUsrName) {
-		Path p = Paths.get(String.valueOf(accUsrName.hashCode()));
+		Path p = Paths.get("./data/" + String.valueOf(accUsrName.hashCode()));
 		if(Files.exists(p, new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
 			acc = loadAcc(p);
 			return true;
 		}
-		
 		return false;
 	}
 
@@ -72,7 +71,7 @@ public class HomeScene {
 		Account loadedAcc = null;
 		if(Files.exists(path, new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
 			try {
-				FileInputStream fis = new FileInputStream("./data/" + path.toString());
+				FileInputStream fis = new FileInputStream(path.toString());
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				loadedAcc = (Account) ois.readObject();
 				ois.close();
