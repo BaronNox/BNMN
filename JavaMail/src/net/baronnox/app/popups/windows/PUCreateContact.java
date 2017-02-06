@@ -62,13 +62,11 @@ public class PUCreateContact {
 				Contact newContact = null;
 				if(personal.getText().isEmpty()) {
 					newContact = new Contact(address.getText());
-					homeScene.addContactToList(newContact);
-					homeScene.getAddressBook().addContactToList(newContact);
 				} else {
 					newContact = new Contact(address.getText(), personal.getText());
-					homeScene.addContactToList(newContact);
-					homeScene.getAddressBook().addContactToList(newContact);
 				}
+				homeScene.getAddressBook().addContactToList(newContact);
+				homeScene.updateContactListView();
 			} else {
 				new PopUpError("This ain't an eMail.");
 			}
