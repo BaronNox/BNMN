@@ -7,6 +7,8 @@ import javax.mail.internet.InternetAddress;
 
 
 public class Contact implements Serializable {
+	private static final long serialVersionUID = Long.parseUnsignedLong("1");
+
 	private static int nextID = 1;
 	
 	private int id;
@@ -40,6 +42,10 @@ public class Contact implements Serializable {
 		} catch (UnsupportedEncodingException e) {
 			System.err.println(personal + " uses wrong charset.");
 		}
+	}
+	
+	public String getAddressAsString() {
+		return iAddress.getAddress();
 	}
 	
 	public int getID() {
