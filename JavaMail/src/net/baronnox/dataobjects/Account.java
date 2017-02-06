@@ -57,8 +57,8 @@ public class Account implements Serializable {
 		return usrName;
 	}
 	
-	private String getUserPw() {
-		return usrPw;
+	public int getUserPwHash() {
+		return usrPw.hashCode();
 	}
 	
 	public boolean isEqual(Account account) {
