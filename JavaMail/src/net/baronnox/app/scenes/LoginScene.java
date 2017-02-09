@@ -23,7 +23,7 @@ import net.baronnox.app.popups.windows.PopUpInfo;
 import net.baronnox.dataobjects.Account;
 
 public class LoginScene extends Scene {
-	private static final String BG_IMG = "JavaMail/resources/BNMN.png";
+	private static final String BG_IMG = "resources/BNMN.png";
 	
 	private Stage primaryStage;
 	private VBox root;
