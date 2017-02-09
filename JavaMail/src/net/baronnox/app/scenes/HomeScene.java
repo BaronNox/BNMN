@@ -18,11 +18,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.baronnox.app.popups.windows.PUCreateContact;
@@ -32,8 +32,8 @@ import net.baronnox.dataobjects.addressbook.AddressBook;
 import net.baronnox.dataobjects.addressbook.Contact;
 
 public class HomeScene {
-	private static final int WIDTH = 640;
-	private static final int HEIGHT = WIDTH / 2;
+	private static final int WIDTH = 600;
+	private static final int HEIGHT = 320;
 	private static final String DATA_DIR = "./data/";
 	
 	private boolean isPUCreateContactShown;
@@ -93,7 +93,9 @@ public class HomeScene {
 		menuBar.setPrefWidth(WIDTH - 2);
 		final Menu file = new Menu("File");
 		final Menu help = new Menu("Help");
-		menuBar.getMenus().addAll(file, help);
+		MenuItem createContact = new Menu("Create New Contact");
+//		file.getItems().setAll(createContact);
+		menuBar.getMenus().addAll(file, createContact, help);
 		
 		vBox.getChildren().add(menuBar);
 		
@@ -102,25 +104,28 @@ public class HomeScene {
 		gridPane.setPrefWidth(WIDTH - 2);
 		gridPane.setGridLinesVisible(true);
 		
-		Pane innerPane = new Pane();
-		innerPane.setPrefHeight(HEIGHT / 2);
-		innerPane.setMinHeight(HEIGHT / 2);
-		innerPane.setMaxHeight(HEIGHT / 2);
+//		Pane innerPane = new Pane();
+//		innerPane.setPrefHeight(HEIGHT / 2);
+//		innerPane.setMinHeight(HEIGHT / 2);
+//		innerPane.setMaxHeight(HEIGHT / 2);
 		
 		listView = new ListView<>();
 		listView.setItems(FXCollections.observableArrayList(acc.getAddressBook().getContactList()));
-		listView.setPrefHeight(innerPane.getPrefHeight());
-		innerPane.getChildren().add(listView);
+//		listView.setPrefHeight(innerPane.getPrefHeight());
+		listView.setPrefHeight(150);
+//		innerPane.getChildren().add(listView);
 		
-		gridPane.add(innerPane, 0, 0);
+//		gridPane.add(innerPane, 0, 0);
+		gridPane.add(listView, 0, 0);
 		
-		Pane contentPane = new Pane();
-		contentPane.setPrefHeight(HEIGHT / 2);
-		contentPane.setMinHeight(HEIGHT / 2);
-		contentPane.setMaxHeight(HEIGHT / 2);
+//		Pane contentPane = new Pane();
+//		contentPane.setPrefHeight(HEIGHT / 2);
+//		contentPane.setMinHeight(HEIGHT / 2);
+//		contentPane.setMaxHeight(HEIGHT / 2);
 		
 		ListView<String> notifList = new ListView<>();
-		notifList.setPrefHeight(contentPane.getPrefHeight());
+//		notifList.setPrefHeight(contentPane.getPrefHeight());
+		notifList.setPrefHeight(150);
 		listView.setOnMouseClicked(e -> {
 			Contact selected = listView.getSelectionModel().getSelectedItem();
 			if(selected != null && !selected.equals(oldSelection)) {
@@ -135,20 +140,33 @@ public class HomeScene {
 			oldSelection = selected;
 		});
 		
-		contentPane.getChildren().add(notifList);
-		gridPane.add(contentPane, 1, 0);
+//		contentPane.getChildren().add(notifList);
+//		gridPane.add(contentPane, 2, 0);
+		gridPane.add(notifList, 2, 0);
 		
 		HBox cBtnBox = new HBox(3);
 		cBtnBox.setAlignment(Pos.CENTER);
 		
-		Button addContactBtn = new Button("Add Contact");
-		addContactBtn.setOnAction(e -> {
+		VBox buttonBox = new VBox();
+		Button addContact = new Button("Add Contact");
+		addContact.setPrefWidth(125);
+		addContact.setTooltip(new Tooltip("Adds selected Contact to Notification"));
+		//TODO: Click logic
+		//END
+		
+		buttonBox.getChildren().add(addContact);
+		gridPane.add(buttonBox, 1, 0);
+		
+		
+		
+		Button createContactBtn = new Button("Create new Contact");
+		createContactBtn.setOnAction(e -> {
 			if(!isPUCreateContactShown) {
 				new PUCreateContact(this);
 				isPUCreateContactShown = true;
 			}
 		});
-		cBtnBox.getChildren().add(addContactBtn);
+		cBtnBox.getChildren().add(createContactBtn);
 		
 		Button delContactBtn = new Button("Remove Contact");
 		delContactBtn.setTooltip(new Tooltip("Delete selected Contact from list."));
