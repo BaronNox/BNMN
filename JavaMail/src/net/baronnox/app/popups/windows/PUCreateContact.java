@@ -25,7 +25,7 @@ public class PUCreateContact {
 		puStage.setResizable(false);
 		puStage.setTitle("Create New Contact - BNMN");
 		this.root = new Pane();
-		Scene scene = new Scene(root, 350, 75);
+		Scene scene = new Scene(root, 400, 75);
 		
 		initUI();
 		
