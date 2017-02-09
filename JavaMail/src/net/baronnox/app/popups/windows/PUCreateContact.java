@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.baronnox.app.scenes.HomeScene;
 import net.baronnox.dataobjects.addressbook.Contact;
@@ -20,6 +21,8 @@ public class PUCreateContact {
 	public PUCreateContact(HomeScene homeScene) {
 		this.homeScene = homeScene;
 		this.puStage = new Stage();
+		puStage.initOwner(homeScene.getStage());
+		puStage.initModality(Modality.WINDOW_MODAL);
 		puStage.centerOnScreen();
 		puStage.requestFocus();
 		puStage.setResizable(false);
@@ -32,9 +35,6 @@ public class PUCreateContact {
 		puStage.setScene(scene);
 		puStage.show();
 		
-		puStage.setOnCloseRequest(e -> {
-			homeScene.setPUCreateContact(false);
-		});
 	}
 
 	private void initUI() {
@@ -76,7 +76,6 @@ public class PUCreateContact {
 		});
 		
 		cancel.setOnAction(e -> {
-			homeScene.setPUCreateContact(false);
 			this.puStage.close();
 		});
 		

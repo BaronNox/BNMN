@@ -36,8 +36,6 @@ public class HomeScene {
 	private static final int HEIGHT = 320;
 	private static final String DATA_DIR = "./data/";
 	
-	private boolean isPUCreateContactShown;
-	
 	private Stage primaryStage;
 	private Scene scene;
 	private Account acc;
@@ -94,8 +92,8 @@ public class HomeScene {
 		final Menu file = new Menu("File");
 		final Menu help = new Menu("Help");
 		MenuItem createContact = new Menu("Create New Contact");
-//		file.getItems().setAll(createContact);
-		menuBar.getMenus().addAll(file, createContact, help);
+		file.getItems().setAll(createContact);
+		menuBar.getMenus().addAll(file, help);
 		
 		vBox.getChildren().add(menuBar);
 		
@@ -161,10 +159,7 @@ public class HomeScene {
 		
 		Button createContactBtn = new Button("Create new Contact");
 		createContactBtn.setOnAction(e -> {
-			if(!isPUCreateContactShown) {
-				new PUCreateContact(this);
-				isPUCreateContactShown = true;
-			}
+			new PUCreateContact(this);
 		});
 		cBtnBox.getChildren().add(createContactBtn);
 		
@@ -203,16 +198,12 @@ public class HomeScene {
 		return this.scene;
 	}
 	
+	public Stage getStage() {
+		return primaryStage;
+	}
+	
 	public AddressBook getAddressBook() {
 		return this.acc.getAddressBook();
-	}
-	
-	public void setPUCreateContact(boolean value) {
-		this.isPUCreateContactShown = value;
-	}
-	
-	public boolean getPUCreateContact() {
-		return this.isPUCreateContactShown;
 	}
 	
 	public void updateContactListView() {
