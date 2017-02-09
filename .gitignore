@@ -14,3 +14,5 @@ JavaMail/.classpath
 JavaMail/bin
 /bin/
 /.project
+/JavaMail/libs
+/JavaMail/data
