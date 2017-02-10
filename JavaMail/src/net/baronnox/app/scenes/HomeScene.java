@@ -88,11 +88,11 @@ public class HomeScene {
 		scrollPane.setContent(vBox);
 		
 		MenuBar menuBar = new MenuBar();
-		menuBar.setPrefWidth(WIDTH - 2);
+		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 		final Menu file = new Menu("File");
 		final Menu help = new Menu("Help");
 		MenuItem createContact = new Menu("Create New Contact");
-		file.getItems().setAll(createContact);
+		file.getItems().add(createContact);
 		menuBar.getMenus().addAll(file, help);
 		
 		vBox.getChildren().add(menuBar);
